@@ -7,10 +7,11 @@ Entorno de escritorio modular para **Arch Linux + Wayland**, construido sobre **
 ## Características principales
 
 - **Hyprland 0.57+ 100% modular en Lua (`hl.*`):** separado en módulos limpios (`colors`, `env`, `monitors`, `autostart`, `input`, `general`, `animations`, `rules`, `keybinds`), validado contra `hl.meta.lua` y `hyprland --verify-config`.
-- **Quickshell estilo Caelestia (`Qt6/QML`):** barra superior con blur nativo, botón con logo de Arch Linux, **lanzador de aplicaciones nativo** (`DesktopEntries` con búsqueda instantánea y navegación por teclado), **visor interactivo de atajos de teclado** (`Super + K`, sincronizado automáticamente con `keybinds.lua`), workspaces interactivos, reloj y calendario en español, **mini reproductor multimedia MPRIS con visualizador Cava reactivo** (y fondo difuminado de carátula), **administrador de notificaciones 100% nativo** (`NotificationServer` con toasts flotantes, centro de notificaciones e historial + modo No molestar), monitor de sistema (`CPU %`, `RAM %`, `Temp °C`), bandeja del sistema con menú contextual Material You (filtrando `nm-applet`), OSD flotante de volumen/brillo y popups interactivos para **Wi-Fi/Bluetooth**, **Audio (PipeWire)**, **Energía/Perfiles + modo "Mantener encendida"** (`systemd-inhibit` + Wayland `IdleInhibitor`) y **Selector visual de Wallpapers**.
+- **Quickshell estilo Caelestia (`Qt6/QML`):** barra superior con blur nativo, botón con logo de Arch Linux, **lanzador de aplicaciones nativo** (`DesktopEntries` con búsqueda instantánea, **categorías dinámicas navegables con `Tab`/`Shift+Tab`**, **sección persistente de aplicaciones recientes** y navegación por teclado), **visor interactivo de atajos de teclado** (`Super + K`, sincronizado automáticamente con `keybinds.lua`), workspaces interactivos, reloj y calendario en español, **mini reproductor multimedia MPRIS con visualizador Cava reactivo** (y fondo difuminado de carátula), **administrador de notificaciones 100% nativo** (`NotificationServer` con toasts flotantes, centro de notificaciones e historial + modo No molestar), monitor de sistema (`CPU %`, `RAM %`, `Temp °C`), bandeja del sistema con menú contextual Material You (filtrando `nm-applet`), OSD flotante de volumen/brillo y popups interactivos para **Wi-Fi/Bluetooth**, **Audio (PipeWire)**, **Energía/Perfiles + modo "Mantener encendida"** (`systemd-inhibit` + Wayland `IdleInhibitor`) y **Selector visual de Wallpapers**.
 - **Material You en vivo (`matugen` + `awww`):** al cambiar el wallpaper (desde `Super + W`, `Super + Shift + W` o `wallpaper.sh`), se regeneran y recargan en caliente los colores de Hyprland, Hyprlock, Quickshell, Ghostty (`SIGUSR2`), Zsh (`SIGUSR1` seguro vía `SigCgt`) y Starship.
 - **Capturas y anotación instantánea:** flujo con `grim` + `slurp` + `satty` + `wl-copy` (captura completa, región directa al portapapeles o anotación inmediata con cierre rápido).
 - **Terminal y Shell modernos:** **Ghostty 1.4+** con transparencia coordinada con el blur de Hyprland, **Zsh** con historial deduplicado de 20 000 líneas, `zsh-autosuggestions`, `zsh-syntax-highlighting` y **Starship** personalizado para Arch Linux.
+- **Cursor unificado (`Bibata-Modern-Classic` 24px):** configurado en Hyprland, GSettings, GTK3/GTK4 y `~/.icons/default/index.theme` para mantener el mismo puntero en Wayland, Qt6, Electron y aplicaciones XWayland como **Steam** y **Discord**.
 - **Instalador idempotente (`install.sh`):** realiza backup automático de configuraciones previas y copia los 6 archivos dinámicos de Matugen como archivos regulares para no ensuciar el árbol Git.
 
 ---
@@ -27,6 +28,7 @@ Entorno de escritorio modular para **Arch Linux + Wayland**, construido sobre **
 | **Shell y Prompt** | `Zsh` + `Starship` | Plugins nativos de Arch, recarga en caliente (`TRAPUSR1`), paleta `[palettes.matugen]` |
 | **Capturas de pantalla** | `grim` + `slurp` + `satty` + `wl-copy` | Guardado en `~/Pictures/Screenshots/` y edición flotante centrada |
 | **Audio / Red / Energía** | `PipeWire` · `Cava` · `NetworkManager` · `BlueZ` · `UPower` | Controlado desde Quickshell con `PipeWire`, `cava`, `nmcli`, `bluetoothctl`, `powerprofilesctl` y `systemd-inhibit` |
+| **Cursor global** | `Bibata-Modern-Classic` (`bibata-cursor-theme-bin`) | Tamaño `24px`, unificado en Hyprland, GTK3/4, Qt6 y XWayland (Steam/Discord) |
 
 ---
 
@@ -39,6 +41,9 @@ dotfiles/
 │   ├── ghostty/
 │   │   ├── config                     # Configuración principal de Ghostty 1.4+
 │   │   └── themes/matugen             # Tema fallback (copiado para Matugen)
+│   ├── gtk-3.0/settings.ini           # Tema oscuro y cursor Bibata para GTK3
+│   ├── gtk-4.0/settings.ini           # Tema oscuro y cursor Bibata para GTK4
+│   ├── icons/default/index.theme      # Cursor fallback estándar para XWayland/Steam
 │   ├── hypr/
 │   │   ├── hyprland.lua               # Punto de entrada Lua
 │   │   ├── hypridle.conf              # Timeouts de brillo, bloqueo, DPMS y suspensión
@@ -55,7 +60,7 @@ dotfiles/
 │   │   ├── components/                # MaterialIcon, PillButton, ToggleTile, PopupSurface
 │   │   ├── osd/                       # Osd.qml (volumen/brillo) y NotificationPopups.qml (toasts)
 │   │   ├── popups/                    # Launcher, Keybinds, Media, NotificationCenter, TrayMenu, NetworkBluetooth, Audio, Power, Wallpaper, Calendar, SysStats
-│   │   └── services/                  # SysStats, Network, Bluetooth, Power, Caffeine, Audio, Cava, Notification, Keybinds, Brightness, PopupState
+│   │   └── services/                  # SysStats, Network, Bluetooth, Power, Caffeine, Audio, Cava, Notification, Keybinds, RecentApps, Brightness, PopupState
 │   ├── satty/config.toml              # Configuración del anotador de capturas
 │   ├── zsh/
 │   │   ├── .zshrc                     # Enlazado a ~/.zshrc
@@ -102,6 +107,7 @@ Definidos en [`config/hypr/lua/keybinds.lua`](config/hypr/lua/keybinds.lua) usan
 | `Super + Space` | Abrir/cerrar lanzador de aplicaciones nativo (`qs ipc call launcher toggle`) |
 | `Super + K` | Abrir/cerrar visor interactivo de atajos de teclado (`qs ipc call keybinds toggle`) |
 | `Super + B` | Abrir navegador (`firefox`) |
+| `Super + E` | Abrir explorador de archivos (`nautilus`) |
 | `Super + Q` | Cerrar ventana activa |
 | `Super + V` | Alternar ventana flotante |
 | `Super + F` | Alternar pantalla completa |

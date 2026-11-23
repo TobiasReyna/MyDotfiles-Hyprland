@@ -70,6 +70,7 @@ PACMAN_PACKAGES=(
     jq
     ghostty
     firefox
+    nautilus
     zsh
     zsh-autosuggestions
     zsh-syntax-highlighting
@@ -98,6 +99,7 @@ AUR_PACKAGES=(
     quickshell-git
     matugen-bin
     ttf-material-symbols-variable-git
+    bibata-cursor-theme-bin
 )
 
 SYSTEM_SERVICES=(
@@ -263,9 +265,14 @@ create_directories() {
         "$XDG_CONFIG/zsh"
         "$XDG_CONFIG/satty"
         "$XDG_CONFIG/cava"
+        "$XDG_CONFIG/gtk-3.0"
+        "$XDG_CONFIG/gtk-4.0"
+        "$HOME/.icons/default"
+        "$HOME/.local/share/icons/default"
         "$HOME/.local/bin"
         "$HOME/.local/state/zsh"
         "$HOME/.local/state/wallpaper"
+        "$HOME/.local/state/quickshell"
         "$HOME/.cache/zsh"
         "$HOME/Pictures/Screenshots"
         "$HOME/Pictures/Wallpapers"
@@ -407,6 +414,12 @@ deploy_configs() {
     deploy_symlink "$REPO_DIR/config/satty/config.toml"    "$XDG_CONFIG/satty/config.toml"
     deploy_symlink "$REPO_DIR/config/cava/quickshell.conf" "$XDG_CONFIG/cava/quickshell.conf"
 
+    # --- Cursor global (Wayland, XWayland/Steam, GTK3 y GTK4) ---
+    deploy_symlink "$REPO_DIR/config/icons/default/index.theme" "$HOME/.icons/default/index.theme"
+    deploy_symlink "$REPO_DIR/config/icons/default/index.theme" "$HOME/.local/share/icons/default/index.theme"
+    deploy_symlink "$REPO_DIR/config/gtk-3.0/settings.ini"      "$XDG_CONFIG/gtk-3.0/settings.ini"
+    deploy_symlink "$REPO_DIR/config/gtk-4.0/settings.ini"      "$XDG_CONFIG/gtk-4.0/settings.ini"
+
     # --- Zsh y scripts ---
     deploy_symlink "$REPO_DIR/config/zsh/.zshrc"        "$HOME/.zshrc"
     deploy_symlink "$REPO_DIR/scripts/wallpaper.sh"     "$HOME/.local/bin/wallpaper.sh"
@@ -453,7 +466,13 @@ enable_services() {
 # Paso 7: Shell por defecto, paleta inicial y resumen
 # -----------------------------------------------------------------------------
 post_setup() {
-    log_section "7. Shell por defecto y paleta inicial"
+    log_section "7. Shell por defecto, cursor GTK y paleta inicial"
+
+    if command -v gsettings >/dev/null 2>&1; then
+        log_info "Aplicando tema de cursor en GSettings (Bibata-Modern-Classic, 24px)"
+        run_cmd gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Classic' || log_warn "No se pudo aplicar cursor-theme en GSettings (sin sesión D-Bus activa)."
+        run_cmd gsettings set org.gnome.desktop.interface cursor-size 24 || log_warn "No se pudo aplicar cursor-size en GSettings."
+    fi
 
     if command -v zsh >/dev/null 2>&1; then
         local zsh_bin current_shell

@@ -7,7 +7,9 @@ hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 
--- Cursor
+-- Cursor global (Bibata-Modern-Classic es XCursor puro, sin carpeta hyprcursors;
+-- omitir HYPRCURSOR_THEME permite que Hyprland cargue XCURSOR_THEME sin fallback roto)
+hl.env("XCURSOR_THEME", "Bibata-Modern-Classic")
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 

@@ -14,7 +14,10 @@ local mod = "SUPER"
 hl.bind(mod .. " + Return", hl.dsp.exec_cmd("ghostty"), { desc = "Abrir terminal Ghostty" })
 
 -- @bind Aplicaciones | SUPER + B | Abrir navegador Firefox
-hl.bind(mod .. " + B",      hl.dsp.exec_cmd("firefox"), { desc = "Abrir Firefox" })
+hl.bind(mod .. " + B",      hl.dsp.exec_cmd("firefox"),  { desc = "Abrir Firefox" })
+
+-- @bind Aplicaciones | SUPER + E | Abrir explorador de archivos (Nautilus)
+hl.bind(mod .. " + E",      hl.dsp.exec_cmd("nautilus"), { desc = "Abrir explorador de archivos (Nautilus)" })
 
 -- -----------------------------------------------------------------------------
 -- Shell y Sistema
