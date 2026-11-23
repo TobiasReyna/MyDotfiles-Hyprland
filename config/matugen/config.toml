@@ -1,0 +1,65 @@
+# =============================================================================
+# Matugen (4.2+) — Generación dinámica de paletas Material You
+# Invocación recomendada (vía scripts/wallpaper.sh):
+#   matugen image "<ruta>" -m dark -t scheme-tonal-spot -c ~/.config/matugen/config.toml
+#
+# Esquemas disponibles (-t / --type):
+#   scheme-tonal-spot (default), scheme-fidelity, scheme-content,
+#   scheme-expressive, scheme-vibrant, scheme-neutral, scheme-monochrome,
+#   scheme-rainbow, scheme-fruit-salad, scheme-smart
+# =============================================================================
+
+[config]
+version_check = false
+caching = false
+
+# Color de respaldo si la imagen no tiene colores dominantes claros
+fallback_color = "#b8c4e0"
+
+# En Matugen 4.x, fijar el índice (0 = color más dominante) evita el selector
+# interactivo en terminal al ejecutarse desde keybinds, scripts o autostart.
+source_color_index = 0
+
+# Se omite `[config.wallpaper]` intencionalmente: el wallpaper y sus transiciones
+# los gestiona `scripts/wallpaper.sh` mediante `awww`.
+
+# Colores ANSI armonizados con el color fuente del wallpaper (Material You blend).
+# Garantizan alta legibilidad en Ghostty manteniendo coherencia cromática.
+[config.custom_colors]
+term_red     = { color = "#f38ba8", blend = true }
+term_green   = { color = "#a6e3a1", blend = true }
+term_yellow  = { color = "#f9e2af", blend = true }
+term_blue    = { color = "#89b4fa", blend = true }
+term_magenta = { color = "#cba6f7", blend = true }
+term_cyan    = { color = "#94e2d5", blend = true }
+
+# =============================================================================
+# Templates de salida y hooks de recarga en vivo
+# =============================================================================
+
+[templates.hyprland]
+input_path  = "~/.config/matugen/templates/hyprland-colors.lua"
+output_path = "~/.config/hypr/lua/colors.lua"
+post_hook   = 'if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then hyprctl reload >/dev/null 2>&1 || true; fi'
+
+[templates.hyprlock]
+input_path  = "~/.config/matugen/templates/hyprlock-colors.conf"
+output_path = "~/.config/hypr/colors-hyprlock.conf"
+
+[templates.quickshell]
+input_path  = "~/.config/matugen/templates/quickshell-colors.qml"
+output_path = "~/.config/quickshell/ThemeColors.qml"
+
+[templates.ghostty]
+input_path  = "~/.config/matugen/templates/ghostty-colors"
+output_path = "~/.config/ghostty/themes/matugen"
+# Ghostty 1.4.0 en Linux recarga su configuración y tema al recibir SIGUSR2.
+post_hook   = "pkill -USR2 ghostty >/dev/null 2>&1 || true"
+
+[templates.zsh]
+input_path  = "~/.config/matugen/templates/zsh-colors.zsh"
+output_path = "~/.config/zsh/matugen-colors.zsh"
+
+[templates.starship]
+input_path  = "~/.config/matugen/templates/starship-colors.toml"
+output_path = "~/.config/starship.toml"

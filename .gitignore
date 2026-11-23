@@ -1,0 +1,23 @@
+# Archivos temporales y del sistema operativo
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+
+# Logs y cachés locales
+*.log
+.cache/
+zcompdump*
+
+# Backups generados localmente
+.dotfiles-backup-*/
+
+# Entornos y editores
+.vscode/
+.idea/
+__pycache__/
+*.pyc

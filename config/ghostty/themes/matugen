@@ -1,0 +1,34 @@
+# =============================================================================
+# Tema Ghostty fallback — Material You (modo oscuro neutro)
+# NOTA: Este archivo será sobrescrito dinámicamente por `matugen` usando
+# `config/matugen/templates/ghostty-colors`.
+# =============================================================================
+
+background = #131316
+foreground = #e4e2e6
+
+cursor-color = #b8c4e0
+cursor-text = #222f47
+
+selection-background = #384560
+selection-foreground = #d8e2ff
+
+# Paleta ANSI 0-7 (normales)
+palette = 0=#1b1b1f
+palette = 1=#f38ba8
+palette = 2=#a6e3a1
+palette = 3=#f9e2af
+palette = 4=#89b4fa
+palette = 5=#cba6f7
+palette = 6=#94e2d5
+palette = 7=#c5c6d0
+
+# Paleta ANSI 8-15 (brillantes)
+palette = 8=#8e9099
+palette = 9=#ffb4ab
+palette = 10=#bfe9bc
+palette = 11=#fbecc9
+palette = 12=#b8c4e0
+palette = 13=#d4c0d8
+palette = 14=#c2c6d4
+palette = 15=#e4e2e6

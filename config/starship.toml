@@ -1,0 +1,112 @@
+# =============================================================================
+# Starship — Configuración fallback para Arch Linux (Material You oscuro neutro)
+# NOTA: Este archivo será sobrescrito dinámicamente por `matugen` usando
+# `config/matugen/templates/starship-colors.toml`.
+# =============================================================================
+
+"$schema" = "https://starship.rs/config-schema.json"
+
+add_newline = true
+palette = "matugen"
+
+format = """
+$os\
+$directory\
+$git_branch\
+$git_status\
+$fill\
+$nodejs\
+$python\
+$rust\
+$lua\
+$docker_context\
+$cmd_duration\
+$line_break\
+$character"""
+
+[os]
+disabled = false
+format = "[$symbol]($style) "
+style = "bold primary"
+
+[os.symbols]
+Arch = ""
+Linux = ""
+
+[directory]
+style = "bold on_surface"
+read_only = " 󰌾"
+read_only_style = "error"
+truncation_length = 3
+truncation_symbol = "…/"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+symbol = " "
+style = "bold secondary"
+format = "on [$symbol$branch]($style) "
+
+[git_status]
+style = "tertiary"
+format = "([$all_status$ahead_behind]($style) )"
+
+[fill]
+symbol = " "
+
+[nodejs]
+symbol = " "
+style = "green"
+format = "[$symbol$version]($style) "
+
+[python]
+symbol = " "
+style = "yellow"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = " "
+style = "tertiary"
+format = "[$symbol$version]($style) "
+
+[lua]
+symbol = " "
+style = "primary"
+format = "[$symbol$version]($style) "
+
+[docker_context]
+symbol = " "
+style = "cyan"
+only_with_files = true
+format = "[$symbol$context]($style) "
+
+[cmd_duration]
+min_time = 2000
+style = "on_surface_variant"
+format = "took [$duration]($style)"
+
+[character]
+success_symbol = "[❯](bold primary)"
+error_symbol = "[❯](bold error)"
+vimcmd_symbol = "[❮](bold secondary)"
+
+# =============================================================================
+# Paleta Material You fallback (oscuro neutro)
+# =============================================================================
+[palettes.matugen]
+primary = "#b8c4e0"
+on_primary = "#222f47"
+primary_container = "#384560"
+secondary = "#c2c6d4"
+tertiary = "#d4c0d8"
+background = "#131316"
+surface = "#1b1b1f"
+surface_container = "#1f1f24"
+surface_container_high = "#2a2a2f"
+on_surface = "#e4e2e6"
+on_surface_variant = "#c5c6d0"
+outline = "#8e9099"
+error = "#ffb4ab"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+cyan = "#94e2d5"

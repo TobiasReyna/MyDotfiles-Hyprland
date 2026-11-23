@@ -1,0 +1,73 @@
+# =============================================================================
+# Ghostty (1.4+) — Configuración para Arch Linux + Hyprland + Material You
+# Recarga en vivo: `pkill -USR2 ghostty` (integrado en scripts/wallpaper.sh)
+# =============================================================================
+
+# Tema dinámico generado por Matugen (fallback en ~/.config/ghostty/themes/matugen)
+theme = matugen
+
+# Tipografía y ligaduras
+font-family = JetBrainsMono Nerd Font
+font-size = 11.5
+font-feature = +calt
+font-feature = +liga
+font-feature = +dlig
+
+# Estética, padding y transparencia coordinada con el blur de Hyprland
+background-opacity = 0.86
+window-padding-x = 12
+window-padding-y = 10
+window-padding-balance = true
+window-decoration = none
+confirm-close-surface = false
+
+# Cursor
+cursor-style = bar
+cursor-style-blink = true
+cursor-opacity = 0.9
+
+# Integración con Zsh y portapapeles Wayland
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = clipboard
+mouse-hide-while-typing = true
+
+# Rendimiento / Wayland
+gtk-titlebar = false
+gtk-single-instance = true
+scrollback-limit = 10000
+
+# =============================================================================
+# Atajos internos de Ghostty (copiar/pegar, tabs, splits, zoom y recarga)
+# =============================================================================
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+v=paste_from_clipboard
+
+# Pestañas
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+shift+w=close_surface
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
+keybind = alt+1=goto_tab:1
+keybind = alt+2=goto_tab:2
+keybind = alt+3=goto_tab:3
+keybind = alt+4=goto_tab:4
+keybind = alt+5=goto_tab:5
+
+# Splits (paneles divididos)
+keybind = ctrl+shift+o=new_split:right
+keybind = ctrl+shift+e=new_split:down
+keybind = ctrl+alt+h=goto_split:left
+keybind = ctrl+alt+j=goto_split:bottom
+keybind = ctrl+alt+k=goto_split:top
+keybind = ctrl+alt+l=goto_split:right
+keybind = ctrl+shift+z=toggle_split_zoom
+
+# Zoom de fuente y recarga manual
+keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl+plus=increase_font_size:1
+keybind = ctrl+minus=decrease_font_size:1
+keybind = ctrl+zero=reset_font_size
+keybind = ctrl+shift+comma=reload_config

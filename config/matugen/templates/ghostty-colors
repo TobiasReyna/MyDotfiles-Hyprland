@@ -1,0 +1,34 @@
+# =============================================================================
+# Tema Ghostty (1.4+) generado automáticamente por `matugen`
+# Wallpaper origen: {{image}}
+# Usar en ~/.config/ghostty/config con: `theme = matugen`
+# =============================================================================
+
+background = {{colors.background.default.hex}}
+foreground = {{colors.on_surface.default.hex}}
+
+cursor-color = {{colors.primary.default.hex}}
+cursor-text = {{colors.on_primary.default.hex}}
+
+selection-background = {{colors.primary_container.default.hex}}
+selection-foreground = {{colors.on_primary_container.default.hex}}
+
+# Paleta ANSI 0-7 (normales, armonizados con el wallpaper)
+palette = 0={{colors.surface_container_low.default.hex}}
+palette = 1={{colors.term_red.default.hex}}
+palette = 2={{colors.term_green.default.hex}}
+palette = 3={{colors.term_yellow.default.hex}}
+palette = 4={{colors.term_blue.default.hex}}
+palette = 5={{colors.term_magenta.default.hex}}
+palette = 6={{colors.term_cyan.default.hex}}
+palette = 7={{colors.on_surface_variant.default.hex}}
+
+# Paleta ANSI 8-15 (brillantes)
+palette = 8={{colors.outline.default.hex}}
+palette = 9={{colors.error.default.hex}}
+palette = 10={{colors.term_green.default.hex | lighten: 10.0}}
+palette = 11={{colors.term_yellow.default.hex | lighten: 10.0}}
+palette = 12={{colors.primary.default.hex}}
+palette = 13={{colors.tertiary.default.hex}}
+palette = 14={{colors.secondary.default.hex}}
+palette = 15={{colors.on_surface.default.hex}}

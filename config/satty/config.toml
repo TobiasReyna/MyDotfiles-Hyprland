@@ -1,0 +1,44 @@
+# =============================================================================
+# Satty (0.22+) — Editor y anotador de capturas de pantalla
+# Referencia local: /usr/share/doc/satty/README.md
+# =============================================================================
+
+[general]
+# Iniciar en ventana flotante ajustada al contenido (no fullscreen)
+fullscreen = false
+resize = { mode = "smart" }
+floating-hack = true
+
+# Ruta de guardado automático al presionar Ctrl+S o el botón de guardar
+output-filename = "~/Pictures/Screenshots/screenshot-%Y-%m-%d_%H-%M-%S.png"
+
+# Comando de portapapeles para Wayland
+copy-command = "wl-copy"
+
+# Cierre inmediato tras copiar o guardar
+early-exit = ["copy", "save", "save-as"]
+save-after-copy = false
+
+# Comportamiento de teclas rápidas
+actions-on-enter = ["save-to-clipboard"]
+actions-on-escape = ["exit"]
+actions-on-right-click = []
+
+# Herramienta inicial y estética
+initial-tool = "brush"
+corner-roundness = 12
+annotation-size-factor = 2
+default-hide-toolbars = false
+default-fill-shapes = false
+default-round-caps = true
+primary-highlighter = "block"
+no-window-decoration = true
+brush-smooth-history-size = 5
+
+# Notificaciones con miniatura de la captura
+disable-notifications = false
+notification-thumbnail = "screenshot"
+
+[font]
+family = "Inter"
+style = "Regular"
