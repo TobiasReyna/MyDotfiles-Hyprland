@@ -37,14 +37,17 @@ PopupSurface {
         // Slider de volumen principal
         Rectangle {
             Layout.fillWidth: true
-            implicitHeight: 68
+            implicitHeight: volCardCol.implicitHeight + 20
             radius: 16
             color: ThemeColors.surfaceContainerLow
 
             ColumnLayout {
-                anchors.fill: parent
+                id: volCardCol
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
                 anchors.margins: 10
-                spacing: 4
+                spacing: 6
 
                 RowLayout {
                     Layout.fillWidth: true
@@ -66,46 +69,25 @@ PopupSurface {
                     }
 
                     Text {
-                        text: AudioService.muted ? "Silenciado" : (AudioService.volumePercent + "%")
+                        text: (AudioService.muted && !volSlider.dragging)
+                            ? "Silenciado"
+                            : (Math.round(volSlider.visualValue * 100) + "%")
                         font.family: "JetBrainsMono Nerd Font"
                         font.pixelSize: 12
                         color: ThemeColors.primary
                     }
                 }
 
-                Slider {
+                VolumeSlider {
                     id: volSlider
                     Layout.fillWidth: true
-                    from: 0.0
-                    to: 1.0
+                    Layout.preferredHeight: 24
                     value: AudioService.volume
-                    onMoved: AudioService.setVolume(value)
-
-                    background: Rectangle {
-                        x: volSlider.leftPadding
-                        y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
-                        width: volSlider.availableWidth
-                        height: 6
-                        radius: 3
-                        color: ThemeColors.surfaceContainerHighest
-
-                        Rectangle {
-                            width: volSlider.visualPosition * parent.width
-                            height: parent.height
-                            radius: 3
-                            color: AudioService.muted ? ThemeColors.outline : ThemeColors.primary
-                        }
-                    }
-
-                    handle: Rectangle {
-                        x: volSlider.leftPadding + volSlider.visualPosition * (volSlider.availableWidth - width)
-                        y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
-                        width: 16
-                        height: 16
-                        radius: 8
-                        color: ThemeColors.primary
-                        border.width: 2
-                        border.color: ThemeColors.colorOnPrimary
+                    muted: AudioService.muted
+                    accentColor: ThemeColors.primary
+                    handleBorderColor: ThemeColors.colorOnPrimary
+                    onValueEdited: function(newValue) {
+                        AudioService.setVolume(newValue)
                     }
                 }
             }
@@ -114,14 +96,17 @@ PopupSurface {
         // Slider de micrófono
         Rectangle {
             Layout.fillWidth: true
-            implicitHeight: 68
+            implicitHeight: micCardCol.implicitHeight + 20
             radius: 16
             color: ThemeColors.surfaceContainerLow
 
             ColumnLayout {
-                anchors.fill: parent
+                id: micCardCol
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
                 anchors.margins: 10
-                spacing: 4
+                spacing: 6
 
                 RowLayout {
                     Layout.fillWidth: true
@@ -143,46 +128,25 @@ PopupSurface {
                     }
 
                     Text {
-                        text: AudioService.micMuted ? "Silenciado" : (AudioService.micPercent + "%")
+                        text: (AudioService.micMuted && !micSlider.dragging)
+                            ? "Silenciado"
+                            : (Math.round(micSlider.visualValue * 100) + "%")
                         font.family: "JetBrainsMono Nerd Font"
                         font.pixelSize: 12
                         color: ThemeColors.secondary
                     }
                 }
 
-                Slider {
+                VolumeSlider {
                     id: micSlider
                     Layout.fillWidth: true
-                    from: 0.0
-                    to: 1.0
+                    Layout.preferredHeight: 24
                     value: AudioService.micVolume
-                    onMoved: AudioService.setMicVolume(value)
-
-                    background: Rectangle {
-                        x: micSlider.leftPadding
-                        y: micSlider.topPadding + micSlider.availableHeight / 2 - height / 2
-                        width: micSlider.availableWidth
-                        height: 6
-                        radius: 3
-                        color: ThemeColors.surfaceContainerHighest
-
-                        Rectangle {
-                            width: micSlider.visualPosition * parent.width
-                            height: parent.height
-                            radius: 3
-                            color: AudioService.micMuted ? ThemeColors.outline : ThemeColors.secondary
-                        }
-                    }
-
-                    handle: Rectangle {
-                        x: micSlider.leftPadding + micSlider.visualPosition * (micSlider.availableWidth - width)
-                        y: micSlider.topPadding + micSlider.availableHeight / 2 - height / 2
-                        width: 16
-                        height: 16
-                        radius: 8
-                        color: ThemeColors.secondary
-                        border.width: 2
-                        border.color: ThemeColors.colorOnSecondary
+                    muted: AudioService.micMuted
+                    accentColor: ThemeColors.secondary
+                    handleBorderColor: ThemeColors.colorOnSecondary
+                    onValueEdited: function(newValue) {
+                        AudioService.setMicVolume(newValue)
                     }
                 }
             }
@@ -205,19 +169,21 @@ PopupSurface {
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.min(180, Math.max(44, AudioService.outputSinks.length * 44))
                 clip: true
+                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
                 ListView {
                     model: AudioService.outputSinks
                     spacing: 4
 
                     delegate: Rectangle {
+                        id: sinkDelegate
                         required property var modelData
                         readonly property bool isSelected: AudioService.defaultSink && modelData.id === AudioService.defaultSink.id
 
                         width: ListView.view.width
                         height: 40
                         radius: 12
-                        color: isSelected
+                        color: sinkDelegate.isSelected
                             ? ThemeColors.primaryContainer
                             : (sinkMouse.containsMouse ? ThemeColors.surfaceContainerHigh : ThemeColors.surfaceContainerLow)
 
@@ -228,19 +194,19 @@ PopupSurface {
                             spacing: 8
 
                             MaterialIcon {
-                                icon: isSelected ? "check_circle" : "speaker"
+                                icon: sinkDelegate.isSelected ? "check_circle" : "speaker"
                                 size: 17
-                                filled: isSelected
-                                color: isSelected ? ThemeColors.colorOnPrimaryContainer : ThemeColors.colorOnSurfaceVariant
+                                filled: sinkDelegate.isSelected
+                                color: sinkDelegate.isSelected ? ThemeColors.colorOnPrimaryContainer : ThemeColors.colorOnSurfaceVariant
                             }
 
                             Text {
                                 Layout.fillWidth: true
-                                text: modelData.description || modelData.nickname || modelData.name || "Salida de audio"
+                                text: sinkDelegate.modelData.description || sinkDelegate.modelData.nickname || sinkDelegate.modelData.name || "Salida de audio"
                                 font.family: "Inter"
                                 font.pixelSize: 12
-                                font.weight: isSelected ? Font.DemiBold : Font.Normal
-                                color: isSelected ? ThemeColors.colorOnPrimaryContainer : ThemeColors.colorOnSurface
+                                font.weight: sinkDelegate.isSelected ? Font.DemiBold : Font.Normal
+                                color: sinkDelegate.isSelected ? ThemeColors.colorOnPrimaryContainer : ThemeColors.colorOnSurface
                                 elide: Text.ElideRight
                             }
                         }
@@ -250,7 +216,7 @@ PopupSurface {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: AudioService.setDefaultSink(modelData)
+                            onClicked: AudioService.setDefaultSink(sinkDelegate.modelData)
                         }
                     }
                 }

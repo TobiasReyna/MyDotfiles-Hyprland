@@ -29,13 +29,27 @@ Singleton {
         }
     }
 
-    readonly property real volume: (defaultSink && defaultSink.audio) ? Math.max(0, Math.min(1.0, defaultSink.audio.volume)) : 0
+    readonly property real volume: {
+        if (defaultSink && defaultSink.ready && defaultSink.audio) {
+            const v = defaultSink.audio.volume
+            if (!isNaN(v))
+                return Math.max(0.0, Math.min(1.0, v))
+        }
+        return 0.0
+    }
     readonly property int volumePercent: Math.round(volume * 100)
-    readonly property bool muted: (defaultSink && defaultSink.audio) ? defaultSink.audio.muted : false
+    readonly property bool muted: (defaultSink && defaultSink.ready && defaultSink.audio) ? defaultSink.audio.muted : false
 
-    readonly property real micVolume: (defaultSource && defaultSource.audio) ? Math.max(0, Math.min(1.0, defaultSource.audio.volume)) : 0
+    readonly property real micVolume: {
+        if (defaultSource && defaultSource.ready && defaultSource.audio) {
+            const v = defaultSource.audio.volume
+            if (!isNaN(v))
+                return Math.max(0.0, Math.min(1.0, v))
+        }
+        return 0.0
+    }
     readonly property int micPercent: Math.round(micVolume * 100)
-    readonly property bool micMuted: (defaultSource && defaultSource.audio) ? defaultSource.audio.muted : false
+    readonly property bool micMuted: (defaultSource && defaultSource.ready && defaultSource.audio) ? defaultSource.audio.muted : false
 
     readonly property var outputSinks: {
         const result = []
@@ -59,37 +73,67 @@ Singleton {
     readonly property string micIcon: micMuted ? "mic_off" : "mic"
 
     function setVolume(val) {
-        const clamped = Math.max(0.0, Math.min(1.0, val))
-        if (defaultSink && defaultSink.audio) {
-            defaultSink.audio.volume = clamped
-            if (clamped > 0 && defaultSink.audio.muted)
-                defaultSink.audio.muted = false
+        const num = Number(val)
+        if (isNaN(num))
+            return
+        const clamped = Math.max(0.0, Math.min(1.0, num))
+        const pct = Math.round(clamped * 100)
+        const sink = defaultSink
+        if (sink && sink.ready && sink.audio) {
+            sink.audio.volume = clamped
+            if (pct > 0 && sink.audio.muted)
+                sink.audio.muted = false
         } else {
-            Quickshell.execDetached(["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", clamped.toFixed(2)])
+            if (pct > 0)
+                Quickshell.execDetached(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "0"])
+            Quickshell.execDetached(["wpctl", "set-volume", "-l", "1.0", "@DEFAULT_AUDIO_SINK@", pct + "%"])
         }
     }
 
+    function setVolumePercent(pct) {
+        const num = Number(pct)
+        if (isNaN(num))
+            return
+        setVolume(Math.max(0, Math.min(100, Math.round(num))) / 100.0)
+    }
+
     function toggleMute() {
-        if (defaultSink && defaultSink.audio)
-            defaultSink.audio.muted = !defaultSink.audio.muted
+        const sink = defaultSink
+        if (sink && sink.ready && sink.audio)
+            sink.audio.muted = !sink.audio.muted
         else
             Quickshell.execDetached(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"])
     }
 
     function setMicVolume(val) {
-        const clamped = Math.max(0.0, Math.min(1.0, val))
-        if (defaultSource && defaultSource.audio) {
-            defaultSource.audio.volume = clamped
-            if (clamped > 0 && defaultSource.audio.muted)
-                defaultSource.audio.muted = false
+        const num = Number(val)
+        if (isNaN(num))
+            return
+        const clamped = Math.max(0.0, Math.min(1.0, num))
+        const pct = Math.round(clamped * 100)
+        const source = defaultSource
+        if (source && source.ready && source.audio) {
+            source.audio.volume = clamped
+            if (pct > 0 && source.audio.muted)
+                source.audio.muted = false
         } else {
-            Quickshell.execDetached(["wpctl", "set-volume", "@DEFAULT_AUDIO_SOURCE@", clamped.toFixed(2)])
+            if (pct > 0)
+                Quickshell.execDetached(["wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "0"])
+            Quickshell.execDetached(["wpctl", "set-volume", "-l", "1.0", "@DEFAULT_AUDIO_SOURCE@", pct + "%"])
         }
     }
 
+    function setMicVolumePercent(pct) {
+        const num = Number(pct)
+        if (isNaN(num))
+            return
+        setMicVolume(Math.max(0, Math.min(100, Math.round(num))) / 100.0)
+    }
+
     function toggleMicMute() {
-        if (defaultSource && defaultSource.audio)
-            defaultSource.audio.muted = !defaultSource.audio.muted
+        const source = defaultSource
+        if (source && source.ready && source.audio)
+            source.audio.muted = !source.audio.muted
         else
             Quickshell.execDetached(["wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle"])
     }
@@ -98,7 +142,7 @@ Singleton {
         if (!node)
             return
         Pipewire.preferredDefaultAudioSink = node
-        if (node.id !== undefined)
+        if (node.id !== undefined && node.id !== null)
             Quickshell.execDetached(["wpctl", "set-default", String(node.id)])
     }
 }
