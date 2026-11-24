@@ -75,6 +75,7 @@ PACMAN_PACKAGES=(
     zsh-autosuggestions
     zsh-syntax-highlighting
     starship
+    fastfetch
     networkmanager
     bluez
     bluez-utils
@@ -265,6 +266,7 @@ create_directories() {
         "$XDG_CONFIG/zsh"
         "$XDG_CONFIG/satty"
         "$XDG_CONFIG/cava"
+        "$XDG_CONFIG/fastfetch"
         "$XDG_CONFIG/gtk-3.0"
         "$XDG_CONFIG/gtk-4.0"
         "$HOME/.icons/default"
@@ -410,9 +412,11 @@ deploy_configs() {
     # --- Ghostty (config estático; themes/matugen se copia aparte) ---
     deploy_symlink "$REPO_DIR/config/ghostty/config" "$XDG_CONFIG/ghostty/config"
 
-    # --- Satty y Cava ---
-    deploy_symlink "$REPO_DIR/config/satty/config.toml"    "$XDG_CONFIG/satty/config.toml"
-    deploy_symlink "$REPO_DIR/config/cava/quickshell.conf" "$XDG_CONFIG/cava/quickshell.conf"
+    # --- Satty, Cava y Fastfetch (mini perfil aislado, sin pisar config.jsonc) ---
+    deploy_symlink "$REPO_DIR/config/satty/config.toml"       "$XDG_CONFIG/satty/config.toml"
+    deploy_symlink "$REPO_DIR/config/cava/quickshell.conf"    "$XDG_CONFIG/cava/quickshell.conf"
+    deploy_symlink "$REPO_DIR/config/fastfetch/mini.jsonc"    "$XDG_CONFIG/fastfetch/mini.jsonc"
+    deploy_symlink "$REPO_DIR/config/fastfetch/mini-ascii.txt" "$XDG_CONFIG/fastfetch/mini-ascii.txt"
 
     # --- Cursor global (Wayland, XWayland/Steam, GTK3 y GTK4) ---
     deploy_symlink "$REPO_DIR/config/icons/default/index.theme" "$HOME/.icons/default/index.theme"

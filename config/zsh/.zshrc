@@ -108,6 +108,7 @@ alias grep='grep --color=auto'
 alias wall='wallpaper.sh'
 alias wallrand='wallpaper.sh --random'
 alias reload-hypr='hyprctl reload'
+alias minifetch='fastfetch --config "${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/mini.jsonc"'
 
 update() {
     if command -v yay >/dev/null 2>&1; then
@@ -150,3 +151,15 @@ fi
 # Aplicar paleta de Matugen después de cargar los plugins para sobrescribir
 # ZSH_HIGHLIGHT_STYLES y ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE.
 load_matugen_colors
+
+# -----------------------------------------------------------------------------
+# Mini fetch automático al abrir Ghostty (solo 1er nivel, sin subshells/tmux)
+# -----------------------------------------------------------------------------
+if [[ -o interactive ]] \
+    && [[ "${TERM_PROGRAM:-}" == "ghostty" || -n "${GHOSTTY_RESOURCES_DIR:-}" ]] \
+    && [[ "${SHLVL:-1}" -eq 1 ]] \
+    && [[ -z "${TMUX:-}" && -z "${VSCODE_PID:-}" ]] \
+    && command -v fastfetch >/dev/null 2>&1 \
+    && [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/mini.jsonc" ]]; then
+    fastfetch --config "${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/mini.jsonc"
+fi
