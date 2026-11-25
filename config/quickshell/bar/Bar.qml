@@ -460,9 +460,6 @@ PanelWindow {
                 }
             }
 
-            // 2b. Monitor/control del servidor local de ComfyUI (visible solo si el puerto 8188 está en escucha)
-            ComfyUiModule {}
-
             // 3. Grupo de control (Accesibilidad tipo Caelestia)
             // Red + Bluetooth
             PillButton {

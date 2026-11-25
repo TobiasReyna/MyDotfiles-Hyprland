@@ -9,5 +9,4 @@ singleton CavaService 1.0 CavaService.qml
 singleton NotificationService 1.0 NotificationService.qml
 singleton KeybindsService 1.0 KeybindsService.qml
 singleton RecentAppsService 1.0 RecentAppsService.qml
-singleton ComfyUiService 1.0 ComfyUiService.qml
 singleton BrightnessService 1.0 BrightnessService.qml
